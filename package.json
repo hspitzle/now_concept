@@ -1,0 +1,70 @@
+{
+  "name": "testyo-generator-babel-boilerplate",
+  "version": "0.0.1",
+  "description": "Automate now concept playlist management",
+  "main": "dist/testyo-generator-babel-boilerplate.js",
+  "scripts": {
+    "test": "gulp",
+    "lint": "gulp lint",
+    "test-browser": "gulp test-browser",
+    "watch": "gulp watch",
+    "build": "gulp build",
+    "coverage": "gulp coverage"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/hspitzle/spotify_now_concept.git"
+  },
+  "keywords": [],
+  "author": "Hayden Spitzley",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/hspitzle/spotify_now_concept/issues"
+  },
+  "homepage": "https://github.com/hspitzle/spotify_now_concept",
+  "devDependencies": {
+    "babel-core": "6.14.0",
+    "babel-loader": "6.2.5",
+    "babel-polyfill": "6.13.0",
+    "babel-preset-latest": "6.14.0",
+    "babel-register": "6.14.0",
+    "chai": "3.5.0",
+    "del": "2.2.2",
+    "glob": "7.0.6",
+    "gulp": "3.9.1",
+    "gulp-eslint": "3.0.1",
+    "gulp-filter": "4.0.0",
+    "gulp-istanbul": "1.1.1",
+    "gulp-livereload": "3.8.1",
+    "gulp-load-plugins": "1.2.4",
+    "gulp-mocha": "3.0.1",
+    "gulp-plumber": "1.1.0",
+    "gulp-rename": "1.2.2",
+    "gulp-sourcemaps": "1.6.0",
+    "gulp-uglify": "2.0.0",
+    "isparta": "4.0.0",
+    "json-loader": "0.5.4",
+    "mocha": "3.0.2",
+    "sinon": "1.17.5",
+    "sinon-chai": "2.8.0",
+    "webpack": "1.13.2",
+    "webpack-stream": "3.2.0"
+  },
+  "babelBoilerplateOptions": {
+    "entryFileName": "app.js",
+    "mainVarName": "app"
+  },
+  "dependencies": {
+    "babel-plugin-root-import": "^5.1.0",
+    "bluebird": "^3.5.1",
+    "convict": "^4.0.2",
+    "express": "^4.16.2",
+    "inquirer": "^5.1.0",
+    "lodash": "^4.17.4",
+    "moment": "^2.19.1",
+    "node-schedule": "^1.2.5",
+    "request": "^2.83.0",
+    "request-promise": "^4.2.2",
+    "spotify-web-api-node": "^2.5.0"
+  }
+}
