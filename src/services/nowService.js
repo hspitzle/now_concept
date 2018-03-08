@@ -1,17 +1,24 @@
 import { SpotifyClient } from '~/src/clients';
 import _ from 'lodash';
+import Promise from 'bluebird';
 
 class NowService {
   constructor() {
-    this.clients = [
-      new SpotifyClient('Test Now', 0, 'minutes')
-    ];
+    console.log('creating now service');
+  }
+
+  static create() {
+    const service = new NowService();
+    return SpotifyClient.create('Test Now', 0, 'minutes').then(client => {
+      service.clients = [client];
+      return service;
+    });
   }
 
   expire() {
     console.log('expiring records');
     _.forEach(this.clients, el => {
-      el.client.expire();
+      el.expire();
     });
   }
 }

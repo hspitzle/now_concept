@@ -3,17 +3,28 @@ import moment from 'moment';
 import _ from 'lodash';
 import Promise from 'bluebird';
 import requestPromise from 'request-promise';
+import { Prompt } from '~/src/util';
+import config from '~/src/config';
 
 const clientId = 'd1b416572ed14b339dabad82548cc4d1';
 const clientSecret = 'ebe8b7fd4d3d430ebb191fddafa57c9f';
 
 class SpotifyClient {
   constructor(nowPlaylistName, ttl, units) {
-    this.init();
+  //   this.init();
     this.nowPlaylistName = nowPlaylistName;
     this.ttl = ttl;
     this.windowUnits = units;
     this.userId = '22m7auzrhql2yqdjgnb6filpy';
+  }
+
+  static create(nowPlaylistName, ttl, units) {
+    const client = new SpotifyClient();
+    return new Prompt().getUserInput().then(() => {
+      console.log(config.get('playlist'));
+      console.log(config.get('ttl') + ' days');
+      return client;
+    });
   }
 
   init() {
