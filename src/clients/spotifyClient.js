@@ -9,8 +9,10 @@ import { PlaylistFactory } from '~/src/factories';
 import opn from 'opn';
 import inquirer from 'inquirer';
 import queryString from 'query-string';
+import fs from 'fs';
 
 const SPOTIFY_CONFIG_FIELDS = ['name', 'ttl'];
+const AUTH_PATH = config.get('userConfigsPath') + 'auth.json';
 
 class SpotifyClient {
   constructor() {
@@ -35,11 +37,8 @@ class SpotifyClient {
    * Authorization code flow
    */
     console.log('::spotifyClient::init');
-
-    const scopes = ['playlist-read-private', 'playlist-modify-public', 'playlist-modify-private'];
-    const redirectUri = 'https://example.com/callback';
-    const state = 'CO';
     
+    const redirectUri = 'https://example.com/callback';
     const clientConfigs = {
       redirectUri : redirectUri,
       clientId : config.get('spotifyClientId'),
@@ -47,7 +46,28 @@ class SpotifyClient {
     };
     this.spotifyApi = new SpotifyWebApi(clientConfigs);
     
+    const token = await this._getToken();
+    this.spotifyApi.setAccessToken(token);
+    return null;
+  }
+
+  async _getToken() {
+    let auth = {};
+    if (fs.existsSync(AUTH_PATH)) {
+      console.log('...loading token');
+      auth = JSON.parse(fs.readFileSync(AUTH_PATH, 'utf8'));
+    } else {
+      console.log('...need to generate token');
+      auth.expiration = moment().format();
+    }
+    const expiration = moment(auth.expiration).subtract(5, 'minutes');
+    return moment().isAfter(expiration) ? this._generateToken() : auth.token;
+  }
+
+  async _generateToken() {
     // Create the authorization URL
+    const scopes = ['playlist-read-private', 'playlist-modify-public', 'playlist-modify-private'];
+    const state = 'CO';
     const authorizeURL = this.spotifyApi.createAuthorizeURL(scopes, state);
 
     console.log('\n1. copy-paste the following url into a browser and complete the spotify sign in');
@@ -68,12 +88,16 @@ class SpotifyClient {
     // Retrieve an access token.
     const authGrant = await this.spotifyApi.authorizationCodeGrant(code);
     const token = authGrant.body['access_token'];
+    const expiration = moment().add(authGrant.body['expires_in'], 'seconds');
+    const auth = {
+      token,
+      expiration,
+    };
+    fs.writeFileSync(AUTH_PATH, JSON.stringify(auth, null, '  '));
 
     console.log('The access token expires in ' + authGrant.body['expires_in']);
     console.log('The access token is ' + token);
-
-    this.spotifyApi.setAccessToken(token);
-    return null;
+    return token;
   }
 
   async expire() {

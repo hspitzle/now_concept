@@ -35,4 +35,5 @@ dist
 .lock-wscript
 
 src/config/user.json
+src/config/auth.json
 src/config/playlists
