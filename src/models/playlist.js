@@ -10,12 +10,13 @@ class Playlist {
       this,
       _.pick(obj, userConfigFields)
     );
+    this.userConfigFields = userConfigFields;
     this._save();
   }
 
   _save() {
     fs.writeFileSync(
-      config.get('userConfigsPath') + this.name + '.json', 
+      config.get('userConfigsPath') + 'playlists/' + this.name + '.json', 
       JSON.stringify(this, null, '  ')
     );
   }

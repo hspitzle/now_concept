@@ -16,8 +16,10 @@ class PlaylistFactory {
 
     const playlistConfigPath = config.get('userConfigsPath') + 'playlists/';
     fs.readdirSync(playlistConfigPath).forEach(file => {
-      console.log('loading ' + file);
-      const playlistConfigs = fs.readFileSync(playlistConfigPath + file, 'utf8');
+      console.log('loading ' + playlistConfigPath + file);
+      const playlistConfigs = JSON.parse(fs.readFileSync(playlistConfigPath + file, 'utf8'));
+      console.log('::playlistConfigs');
+      console.log(playlistConfigs);
       playlists.push(new Playlist(playlistConfigs, playlistConfigs.userConfigFields));
     })
     return playlists;

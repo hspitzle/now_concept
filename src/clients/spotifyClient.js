@@ -7,6 +7,8 @@ import { Prompt } from '~/src/util';
 import config from '~/src/config';
 import { PlaylistFactory } from '~/src/factories';
 import opn from 'opn';
+import inquirer from 'inquirer';
+import queryString from 'query-string';
 
 const SPOTIFY_CONFIG_FIELDS = ['name', 'ttl'];
 
@@ -43,50 +45,55 @@ class SpotifyClient {
       clientId : config.get('spotifyClientId'),
       clientSecret : config.get('spotifyClientSecret'),
     };
-    console.log('::clientConfigs');
-    console.log(clientConfigs);
     const spotifyApi = new SpotifyWebApi(clientConfigs);
     
     // Create the authorization URL
     const authorizeURL = spotifyApi.createAuthorizeURL(scopes, state);
+
+    console.log('\n1. copy-paste the following url into a browser and complete the spotify sign in');
+    console.log('2. copy the url of the page it redirects you to and paste it here\n');
     console.log(authorizeURL);
-    opn(authorizeURL);
+    // await opn(authorizeURL);
+
+    const answer = await inquirer.prompt([
+      {
+        type: 'input',
+        name: 'url',
+        message: 'enter the url:',
+      }
+    ]);
+
+    const qs = answer.url.split('?')[1];
+    const code = queryString.parse(qs).code;
     
-    // return requestPromise(authorizeURL).then( response => {
-    //   console.log(response);
-    // });
-
-    const code = 'AQDneit9eailDw9DXVbHYcU6CMLgflPpGW4US0BbJLJ-zBagV7Md7CMspA0CKymr_JXE9t_kRuI_FLpgW7VgI7p_phMv1vjzyC7ZJYxSifbtxT0AHH-cK4Tos2srhibp55Bu6Kidt-03wwF9plzxtDc_mmzukftaZgBeqmRkNEWfh0CLHgnx3oZFenHBWkblw9Op5M_sjOHB83uRfe9BnKwavl2oNxrb7nW3XBmW2UZkgW0AKJH3_pqy8SAJloR6WU5HYUiNkcJtUyh7RQ6ll2aknX1wDMefBfY';
-
     // Retrieve an access token.
-    // this.spotify = spotifyApi.authorizationCodeGrant(code).then( data => {
-    //   console.log('The access token expires in ' + data.body['expires_in']);
-    //   console.log('The access token is ' + data.body['access_token']);
+    this.spotify = spotifyApi.authorizationCodeGrant(code).then( data => {
+      console.log('The access token expires in ' + data.body['expires_in']);
+      console.log('The access token is ' + data.body['access_token']);
   
-    //   // Save the access token so that it's used in future calls
-    //   spotifyApi.setAccessToken(data.body['access_token']);
-    //   return spotifyApi;
-    // });
+      // Save the access token so that it's used in future calls
+      spotifyApi.setAccessToken(data.body['access_token']);
+      return spotifyApi;
+    });
 
-    const token = 'BQD3t37fgyDQ8sCrDlFyP5LXowLmu78tdFtg4CS7PllqsxFncALhMh1RlZDqT-vragXkGlpZ-lKU-WBUD6HiimXP4ic9lkbB6HapHeow7EpwKiZx_SMFfh5rT5U8yS6gUxeh6jN0euNFTSWH0cneVrnvs-NxpRy1pSqLlIoifxyVLFTC58osano6qvVcwafxE5E1ixDpVgKAWexeH7OPCE0sMFtodkBl_cyp6c5il1LeU68ITAeYTRLUzzpYLTZKps1ZjPN0XMY';
-    spotifyApi.setAccessToken(token);
-    this.spotify = Promise.resolve(spotifyApi);
+    // const token = 'BQD3t37fgyDQ8sCrDlFyP5LXowLmu78tdFtg4CS7PllqsxFncALhMh1RlZDqT-vragXkGlpZ-lKU-WBUD6HiimXP4ic9lkbB6HapHeow7EpwKiZx_SMFfh5rT5U8yS6gUxeh6jN0euNFTSWH0cneVrnvs-NxpRy1pSqLlIoifxyVLFTC58osano6qvVcwafxE5E1ixDpVgKAWexeH7OPCE0sMFtodkBl_cyp6c5il1LeU68ITAeYTRLUzzpYLTZKps1ZjPN0XMY';
+    // spotifyApi.setAccessToken(token);
+    // this.spotify = Promise.resolve(spotifyApi);
+    return Promise.resolve(spotifyApi);
   }
 
-  expire() {
+  async expire() {
+    await this.init();
     console.log('::spotifyClient::expire');
-    this.playlists.forEach( playlist => {
-      this._expirePlaylist(playlist);
-    });
-    return Promise.resolve();
+    return Promise.each(
+      this.playlists, 
+      playlist => this._expirePlaylist(playlist)
+    );
   }
 
   async _expirePlaylist(playlist) {
     console.log('expiring', playlist);
-    await this.init();
     const spotifyApi = await this.spotify;
-    console.log('...spotifyApi');
-    console.log(spotifyApi);
     const nowPlaylist = await this._findOrCreatePlaylist(playlist.name);
     console.log('::spotify playlist', _.pick(nowPlaylist, ['id', 'name']));
 
@@ -94,15 +101,16 @@ class SpotifyClient {
       const tracks = await this._getPlaylistTracks(nowPlaylist);
       console.log(`${nowPlaylist.name} contains ${tracks.length} tracks`);
 
-      const archiveMapping = this._determineExpirableTracks(tracks);
-      return Promise.each(
-        Object.keys(archiveMapping),
-        archivePlaylistName => this._moveTracksToArchive(nowPlaylist, archivePlaylistName, archiveMapping[archivePlaylistName])
-      );
+      // const archiveMapping = this._determineExpirableTracks(tracks);
+      // return Promise.each(
+      //   Object.keys(archiveMapping),
+      //   archivePlaylistName => this._moveTracksToArchive(nowPlaylist, archivePlaylistName, archiveMapping[archivePlaylistName])
+      // );
     } catch(err) {
       console.log('Expiration failed: ', err);
       throw err;
     }
+    return null;
   }
 
   async _getPlaylistTracks(playlist) {
