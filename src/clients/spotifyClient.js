@@ -45,10 +45,10 @@ class SpotifyClient {
       clientId : config.get('spotifyClientId'),
       clientSecret : config.get('spotifyClientSecret'),
     };
-    const spotifyApi = new SpotifyWebApi(clientConfigs);
+    this.spotifyApi = new SpotifyWebApi(clientConfigs);
     
     // Create the authorization URL
-    const authorizeURL = spotifyApi.createAuthorizeURL(scopes, state);
+    const authorizeURL = this.spotifyApi.createAuthorizeURL(scopes, state);
 
     console.log('\n1. copy-paste the following url into a browser and complete the spotify sign in');
     console.log('2. copy the url of the page it redirects you to and paste it here\n');
@@ -62,24 +62,18 @@ class SpotifyClient {
         message: 'enter the url:',
       }
     ]);
-
     const qs = answer.url.split('?')[1];
     const code = queryString.parse(qs).code;
     
     // Retrieve an access token.
-    this.spotify = spotifyApi.authorizationCodeGrant(code).then( data => {
-      console.log('The access token expires in ' + data.body['expires_in']);
-      console.log('The access token is ' + data.body['access_token']);
-  
-      // Save the access token so that it's used in future calls
-      spotifyApi.setAccessToken(data.body['access_token']);
-      return spotifyApi;
-    });
+    const authGrant = await this.spotifyApi.authorizationCodeGrant(code);
+    const token = authGrant.body['access_token'];
 
-    // const token = 'BQD3t37fgyDQ8sCrDlFyP5LXowLmu78tdFtg4CS7PllqsxFncALhMh1RlZDqT-vragXkGlpZ-lKU-WBUD6HiimXP4ic9lkbB6HapHeow7EpwKiZx_SMFfh5rT5U8yS6gUxeh6jN0euNFTSWH0cneVrnvs-NxpRy1pSqLlIoifxyVLFTC58osano6qvVcwafxE5E1ixDpVgKAWexeH7OPCE0sMFtodkBl_cyp6c5il1LeU68ITAeYTRLUzzpYLTZKps1ZjPN0XMY';
-    // spotifyApi.setAccessToken(token);
-    // this.spotify = Promise.resolve(spotifyApi);
-    return Promise.resolve(spotifyApi);
+    console.log('The access token expires in ' + authGrant.body['expires_in']);
+    console.log('The access token is ' + token);
+
+    this.spotifyApi.setAccessToken(token);
+    return null;
   }
 
   async expire() {
@@ -93,7 +87,6 @@ class SpotifyClient {
 
   async _expirePlaylist(playlist) {
     console.log('expiring', playlist);
-    const spotifyApi = await this.spotify;
     const nowPlaylist = await this._findOrCreatePlaylist(playlist.name);
     console.log('::spotify playlist', _.pick(nowPlaylist, ['id', 'name']));
 
@@ -101,7 +94,9 @@ class SpotifyClient {
       const tracks = await this._getPlaylistTracks(nowPlaylist);
       console.log(`${nowPlaylist.name} contains ${tracks.length} tracks`);
 
-      // const archiveMapping = this._determineExpirableTracks(tracks);
+      const archiveMapping = this._determineExpirableTracks(tracks);
+      console.log('::archiveMapping');
+      console.log(archiveMapping);
       // return Promise.each(
       //   Object.keys(archiveMapping),
       //   archivePlaylistName => this._moveTracksToArchive(nowPlaylist, archivePlaylistName, archiveMapping[archivePlaylistName])
@@ -115,8 +110,7 @@ class SpotifyClient {
 
   async _getPlaylistTracks(playlist) {
     console.log('::spotifyClient::_getPlaylistTracks');
-    const spotifyApi = await this.spotify;
-    const data = await spotifyApi.getPlaylistTracks(this.userId, playlist.id, { 'fields' : 'items' })
+    const data = await this.spotifyApi.getPlaylistTracks(this.userId, playlist.id, { 'fields' : 'items' })
     return data.body.items;
   }
 
@@ -139,7 +133,6 @@ class SpotifyClient {
   }
 
   async _moveTracksToArchive(nowPlaylist, playlistName, tracks) {
-    const spotifyApi = await this.spotify;
     console.log(`Moving ${tracks.length} tracks to playlist: ${playlistName}`);
 
     if (playlistName === '2017-vol.08-aug') { //testing
@@ -157,24 +150,21 @@ class SpotifyClient {
   }
 
   async _addTrackToPlaylist(playlist, track) {
-    const spotifyApi = await this.spotify;
-    return spotifyApi.addTracksToPlaylist(this.userId, playlist.id, [track.uri]).catch( err => {
+    return this.spotifyApi.addTracksToPlaylist(this.userId, playlist.id, [track.uri]).catch( err => {
       console.log(`Error adding ${track.name} to ${playlist.name}`, err);
       return Promise.reject(err);
     });
   }
 
   async _removeTrackFromPlaylist(playlist, track) {
-    const spotifyApi = await this.spotify;
-    return spotifyApi.removeTracksFromPlaylist(this.userId, playlist.id, [track]).catch( err => {
+    return this.spotifyApi.removeTracksFromPlaylist(this.userId, playlist.id, [track]).catch( err => {
       console.log(`Error removing ${track.name} from ${playlist.name}`, err);
       return Promise.reject(err);
     });
   }
 
   async _findOrCreatePlaylist(playlistName) {
-    const spotifyApi = await this.spotify;
-    return spotifyApi.getUserPlaylists(this.userId).then( data => {
+    return this.spotifyApi.getUserPlaylists(this.userId).then( data => {
       let resultPlaylist = {};
       data.body.items.forEach( playlist => {
         if (playlist.name === playlistName) {
