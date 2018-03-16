@@ -2,12 +2,27 @@ export default {
   userConfigsPath: {
     doc: 'Path to userr config file',
     format: String,
-    default: './src/config/curator.json',
+    default: './src/config/',
   },
   usingStoredConfigs: {
     doc: 'Whether or not a stored config file was loaded',
     format: Boolean,
     default: false,
+  },
+  spotifyUserId: {
+    doc: 'ID of user',
+    format: String,
+    default: ''
+  },
+  spotifyClientId: {
+    doc: 'client id',
+    format: String,
+    default: ''
+  },
+  spotifyClientSecret: {
+    doc: 'client secret',
+    format: String,
+    default: ''
   },
   playlist: {
     doc: 'Name of playlist to clean',

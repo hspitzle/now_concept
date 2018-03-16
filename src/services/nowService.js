@@ -5,20 +5,17 @@ import Promise from 'bluebird';
 class NowService {
   constructor() {
     console.log('creating now service');
+    this.clients = [];
   }
 
-  static create() {
-    const service = new NowService();
-    return SpotifyClient.create('Test Now', 0, 'minutes').then(client => {
-      service.clients = [client];
-      return service;
-    });
+  addClient(client) {
+    this.clients.push(client);
   }
 
   expire() {
-    console.log('expiring records');
-    _.forEach(this.clients, el => {
-      el.expire();
+    console.log('expiring clients');
+    return Promise.each(this.clients, client => {
+      return client.expire();
     });
   }
 }

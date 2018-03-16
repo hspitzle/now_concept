@@ -34,4 +34,5 @@ dist
 # Users Environment Variables
 .lock-wscript
 
-src/config/curator.json
+src/config/user.json
+src/config/playlists

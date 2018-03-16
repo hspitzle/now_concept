@@ -4,21 +4,20 @@ import Promise from 'bluebird';
 import inquirer from 'inquirer';
 
 class Prompt {
-  constructor(userConfigFields = ['playlist', 'ttl']) {
+  constructor() {
     this.userConfigFields = userConfigFields;
   }
 
-  getUserInput() {
-    return this._getCredentials()
-    .then(() => this._getFromConfigsOrPrompt())
-    .then(answers => this._verifyInput(answers));
+  getPlaylistsToManage() {
+    return this._getFromConfigsOrPrompt()
+      .then(answers => this._verifyInput(answers));
   }
 
   _getCredentials() {
     return Promise.resolve();
   }
 
-  _getFromConfigsOrPrompt(keys) {
+  _getFromConfigsOrPrompt() {
     if (config.get('usingStoredConfigs')) {
       return null;
     }
