@@ -37,3 +37,5 @@ dist
 src/config/user.json
 src/config/auth.json
 src/config/playlists
+
+package-lock.json
