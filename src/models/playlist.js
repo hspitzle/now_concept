@@ -16,7 +16,7 @@ class Playlist {
 
   _save() {
     fs.writeFileSync(
-      config.get('userConfigsPath') + 'playlists/' + this.name + '.json', 
+      config.get('userConfigsPath') + 'playlists/' + this.name + '.json',
       JSON.stringify(this, null, '  ')
     );
   }

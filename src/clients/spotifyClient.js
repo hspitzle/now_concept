@@ -30,7 +30,7 @@ class SpotifyClient {
     playlists.forEach( playlist => {
       console.log(playlist);
     });
-    
+
     client.playlists = playlists;
     return client;
   }
@@ -40,7 +40,7 @@ class SpotifyClient {
    */
   async init() {
     this.log.debug('::spotifyClient::init');
-    
+
     const redirectUri = 'https://example.com/callback';
     const clientConfigs = {
       redirectUri : redirectUri,
@@ -48,7 +48,7 @@ class SpotifyClient {
       clientSecret : config.get('spotifyClientSecret'),
     };
     this.spotifyApi = new SpotifyWebApi(clientConfigs);
-    
+
     const token = await this._getToken();
     this.spotifyApi.setAccessToken(token);
     return null;
@@ -89,7 +89,7 @@ class SpotifyClient {
     ]);
     const qs = answer.url.split('?')[1];
     const code = queryString.parse(qs).code;
-    
+
     // Retrieve an access token.
     const authGrant = await this.spotifyApi.authorizationCodeGrant(code);
     const token = authGrant.body['access_token'];
@@ -106,7 +106,7 @@ class SpotifyClient {
     await this.init();
     this.log.debug('::spotifyClient::expire');
     return Promise.each(
-      this.playlists, 
+      this.playlists,
       playlist => this._expirePlaylist(playlist)
     );
   }
@@ -163,7 +163,7 @@ class SpotifyClient {
     this.log.info(`Moving ${tracks.length} tracks to playlist: ${archivePlaylistName}`);
     const archivePlaylist = await this._findOrCreatePlaylist(archivePlaylistName);
     return Promise.each(
-      tracks, 
+      tracks,
       track => this._moveTrack(track, nowPlaylist, archivePlaylist)
     );
   }
@@ -179,7 +179,7 @@ class SpotifyClient {
     } catch(err) {
       this.log.error(`Error adding ${track.name} to ${playlist.name}`, err);
       throw err;
-    }      
+    }
   }
 
   async _removeTrackFromPlaylist(track, playlist) {
