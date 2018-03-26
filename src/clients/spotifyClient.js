@@ -17,7 +17,7 @@ const AUTH_PATH = config.get('userConfigsPath') + 'auth.json';
 class SpotifyClient {
   constructor() {
     this.userId = config.get('spotifyUserId');
-    this.ttlUnit = 'hours'; //TODO: change to 'days'
+    this.ttlUnits = 'minutes'; //TODO: change to 'days'
   }
 
   static async create() {
@@ -141,7 +141,6 @@ class SpotifyClient {
 
   _determineExpirableTracks(playlist, tracks) { //TODO: fix expiration
     const archiveMapping = {};
-    let expireCount = 0;
     tracks.forEach( track => {
       const dateAdded = moment(track.added_at);
       if (dateAdded.isBefore(moment().subtract(playlist.ttl, this.ttlUnits))) {
@@ -150,22 +149,22 @@ class SpotifyClient {
           archiveMapping[archivePlaylistName] = [];
         }
         archiveMapping[archivePlaylistName].push(track.track);
-        expireCount++;
       }
     });
+    const expireCount = _.reduce(archiveMapping, (acc, val) => {
+      acc + val.length;
+    }, 0);
     console.log(`Expiring ${expireCount} tracks`);
     return archiveMapping;
   }
 
   async _moveTracksToArchive(nowPlaylist, archivePlaylistName, tracks) {
     console.log(`Moving ${tracks.length} tracks to playlist: ${archivePlaylistName}`);
-
-    // if (archivePlaylistName === '2017-vol.08-aug') { //testing
-    //   return Promise.resolve('next');
-    // }
-
     const archivePlaylist = await this._findOrCreatePlaylist(archivePlaylistName);
-    return Promise.each(tracks, track => this._moveTrack(track, nowPlaylist, archivePlaylist));
+    return Promise.each(
+      tracks, 
+      track => this._moveTrack(track, nowPlaylist, archivePlaylist)
+    );
   }
 
   async _moveTrack(track, srcPlaylist, destPlaylist) {
