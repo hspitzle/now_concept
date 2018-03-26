@@ -34,4 +34,8 @@ export default {
     format: Number,
     default: 45,
   },
+  pino: {
+    level: 'info',
+    prettyPrint: true
+  }
 };

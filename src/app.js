@@ -38,4 +38,3 @@ class App {
 
 const app = new App();
 app.start().then(() => process.exit(0));
-

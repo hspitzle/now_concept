@@ -62,6 +62,7 @@
     "moment": "^2.19.1",
     "node-schedule": "^1.2.5",
     "opn": "^5.3.0",
+    "pino": "^4.15.0",
     "query-string": "^6.0.0",
     "request": "^2.83.0",
     "request-promise": "^4.2.2",
