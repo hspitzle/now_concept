@@ -1,6 +1,6 @@
 import config from '~/src/config';
 import { PlaylistFactory } from '~/src/factories';
-import { logger, Prompt } from '~/src/util';
+import { logger } from '~/src/util';
 
 import _ from 'lodash';
 import fs from 'fs';
