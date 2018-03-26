@@ -2,12 +2,19 @@ import config from '~/src/config';
 import { Playlist } from '~/src/models';
 import { logger } from '~/src/util';
 
+import _ from 'lodash';
 import fs from 'fs';
 import inquirer from 'inquirer';
 
 const log = logger.child({ class: 'PlaylistFactory' });
 
 class PlaylistFactory {
+
+  static getArchiveNameFromDate(date) {
+    const archiveTemplate = config.get('spotifyArchiveTemplate');
+    return _.template(archiveTemplate)({date});
+  }
+
   static getPlaylists(userConfigFields) {
     return config.get('usingStoredConfigs') ?
       this._loadPlaylists() :

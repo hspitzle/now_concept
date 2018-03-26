@@ -145,7 +145,7 @@ class SpotifyClient {
     tracks.forEach( track => {
       const dateAdded = moment(track.added_at);
       if (dateAdded.isBefore(moment().subtract(playlist.ttl, this.ttlUnits))) {
-        const archivePlaylistName = this._getArchiveNameFromDate(dateAdded)
+        const archivePlaylistName = PlaylistFactory.getArchiveNameFromDate(dateAdded);
         if (!_.has(archiveMapping, archivePlaylistName)) {
           archiveMapping[archivePlaylistName] = [];
         }
@@ -153,7 +153,7 @@ class SpotifyClient {
       }
     });
     const expireCount = _.reduce(archiveMapping, (acc, val) => {
-      acc + val.length;
+      return acc + val.length;
     }, 0);
     this.log.info(`Expiring ${expireCount} tracks`);
     return archiveMapping;
@@ -218,13 +218,6 @@ class SpotifyClient {
     } catch(err) {
       this.log.error('Something went wrong creating playlist!', err);
     }
-  }
-
-  _getArchiveNameFromDate(date) {
-    const year = date.format('YYYY');
-    const monthNum = date.format('MM');
-    const monthAbbrv = date.format('MMM').toLowerCase();
-    return `${year}-vol.${monthNum}-${monthAbbrv}`; //TODO: make pattern configurable
   }
 }
 

@@ -24,6 +24,11 @@ export default {
     format: String,
     default: ''
   },
+  spotifyArchiveTemplate: {
+    doc: 'Template for how to create archive playlists',
+    format: String,
+    default: '<%- date.format("YYYY") %>-vol.<%- date.format("MM") %>-<%- date.format("MMM").toLowerCase() %>'
+  },
   playlist: {
     doc: 'Name of playlist to clean',
     format: String,
