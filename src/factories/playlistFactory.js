@@ -1,8 +1,11 @@
 import config from '~/src/config';
 import { Playlist } from '~/src/models';
+import { logger } from '~/src/util';
 
-import inquirer from 'inquirer';
 import fs from 'fs';
+import inquirer from 'inquirer';
+
+const log = logger.child({ class: 'PlaylistFactory' });
 
 class PlaylistFactory {
   static getPlaylists(userConfigFields) {
@@ -16,10 +19,10 @@ class PlaylistFactory {
 
     const playlistConfigPath = config.get('userConfigsPath') + 'playlists/';
     fs.readdirSync(playlistConfigPath).forEach(file => {
-      console.log('loading ' + playlistConfigPath + file);
+      log.debug('loading ' + playlistConfigPath + file);
       const playlistConfigs = JSON.parse(fs.readFileSync(playlistConfigPath + file, 'utf8'));
-      console.log('::playlistConfigs');
-      console.log(playlistConfigs);
+      log.debug('::playlistConfigs');
+      log.debug(playlistConfigs);
       playlists.push(new Playlist(playlistConfigs, playlistConfigs.userConfigFields));
     })
     return playlists;

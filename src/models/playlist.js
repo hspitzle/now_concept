@@ -1,8 +1,8 @@
 import config from '~/src/config';
 
 import _ from 'lodash';
-import moment from 'moment';
 import fs from 'fs';
+import moment from 'moment';
 
 class Playlist {
   constructor(obj, userConfigFields) {
@@ -20,10 +20,6 @@ class Playlist {
       JSON.stringify(this, null, '  ')
     );
   }
-
-  
-
-
 }
 
 export default Playlist;

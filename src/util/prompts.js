@@ -1,7 +1,8 @@
-import fs from 'fs';
 import config from '~/src/config';
-import Promise from 'bluebird';
+
+import fs from 'fs';
 import inquirer from 'inquirer';
+import Promise from 'bluebird';
 
 class Prompt {
   constructor() {
