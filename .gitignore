@@ -39,3 +39,4 @@ src/config/auth.json
 src/config/playlists
 
 package-lock.json
+.nyc_output

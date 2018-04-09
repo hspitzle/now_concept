@@ -28,7 +28,7 @@ class SpotifyClient {
     const playlists = await PlaylistFactory.getPlaylists(SPOTIFY_CONFIG_FIELDS);
 
     playlists.forEach( playlist => {
-      console.log(playlist);
+      client.log.info(playlist);
     });
 
     client.playlists = playlists;

@@ -1,4 +1,10 @@
 export default {
+  env: {
+    doc: 'runtime environment',
+    format: ['development', 'production', 'staging', 'test'],
+    default: 'development',
+    env: 'NODE_ENV'
+  },
   userConfigsPath: {
     doc: 'Path to userr config file',
     format: String,
