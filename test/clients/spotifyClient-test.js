@@ -9,10 +9,7 @@ describe('SpotifyClient', function() {
 
   describe('#create', function() {
     it('sets correct ttl units', async function() {
-      console.log('hello world');
-      console.log(client.ttlUnits);
-
-
+      // TODO: remove if-check
       client.playlists.forEach(playlist => {
         if (playlist.name === 'Refinition Now') {
           expect(client.ttlUnits).to.equal('days');
