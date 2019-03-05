@@ -1,5 +1,6 @@
 --option value test/**/*-test.js
 --recursive
 --require babel-register
+--require test/setup.js
 --sort
 --ui bdd
