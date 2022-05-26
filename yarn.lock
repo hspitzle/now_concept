@@ -966,10 +966,6 @@ camelcase@^1.0.2:
   version "1.2.1"
   resolved "https://registry.yarnpkg.com/camelcase/-/camelcase-1.2.1.tgz#9bb5304d2e0b56698b2c758b08a3eaa9daa58a39"
 
-camelcase@^4.1.0:
-  version "4.1.0"
-  resolved "https://registry.yarnpkg.com/camelcase/-/camelcase-4.1.0.tgz#d545635be1e33c542649c69173e5de6acfae34dd"
-
 caniuse-lite@^1.0.30000792:
   version "1.0.30000814"
   resolved "https://registry.yarnpkg.com/caniuse-lite/-/caniuse-lite-1.0.30000814.tgz#73eb6925ac2e54d495218f1ea0007da3940e488b"
@@ -1170,18 +1166,12 @@ convert-source-map@^1.1.0, convert-source-map@^1.1.1, convert-source-map@^1.5.0:
   version "1.5.0"
   resolved "https://registry.yarnpkg.com/convert-source-map/-/convert-source-map-1.5.0.tgz#9acd70851c6d5dfdd93d9282e5edf94a03ff46b5"
 
-convict@^4.0.2:
-  version "4.0.2"
-  resolved "https://registry.yarnpkg.com/convict/-/convict-4.0.2.tgz#a15165d43c211d125f57c64d28bc561dc29d35be"
+convict@^6.2.3:
+  version "6.2.3"
+  resolved "https://registry.yarnpkg.com/convict/-/convict-6.2.3.tgz#61f02858f6f1c5806d55837c5bb54ed64731ee8a"
   dependencies:
-    depd "1.1.1"
-    json5 "0.5.1"
-    lodash.clonedeep "4.5.0"
-    moment "2.19.3"
-    validator "7.2.0"
-    yargs-parser "7.0.0"
-  optionalDependencies:
-    varify "0.2.0"
+    lodash.clonedeep "^4.5.0"
+    yargs-parser "^20.2.7"
 
 cookie-signature@1.0.6:
   version "1.0.6"
@@ -1601,10 +1591,6 @@ esprima@^3.1.3:
 esprima@^4.0.0:
   version "4.0.0"
   resolved "https://registry.yarnpkg.com/esprima/-/esprima-4.0.0.tgz#4499eddcd1110e0b218bacf2fa7f7f59f55ca804"
-
-esprima@~3.0.0:
-  version "3.0.0"
-  resolved "https://registry.yarnpkg.com/esprima/-/esprima-3.0.0.tgz#53cf247acda77313e551c3aa2e73342d3fb4f7d9"
 
 esquery@^1.0.0:
   version "1.0.0"
@@ -2892,13 +2878,13 @@ json3@3.3.2:
   version "3.3.2"
   resolved "https://registry.yarnpkg.com/json3/-/json3-3.3.2.tgz#3c0434743df93e2f5c42aee7b19bcb483575f4e1"
 
-json5@0.5.1, json5@^0.5.0, json5@^0.5.1:
-  version "0.5.1"
-  resolved "https://registry.yarnpkg.com/json5/-/json5-0.5.1.tgz#1eade7acc012034ad84e2396767ead9fa5495821"
-
 json5@^0.4.0:
   version "0.4.0"
   resolved "https://registry.yarnpkg.com/json5/-/json5-0.4.0.tgz#054352e4c4c80c86c0923877d449de176a732c8d"
+
+json5@^0.5.0, json5@^0.5.1:
+  version "0.5.1"
+  resolved "https://registry.yarnpkg.com/json5/-/json5-0.5.1.tgz#1eade7acc012034ad84e2396767ead9fa5495821"
 
 jsonify@~0.0.0:
   version "0.0.0"
@@ -3045,7 +3031,7 @@ lodash.clone@^4.3.2:
   version "4.5.0"
   resolved "https://registry.yarnpkg.com/lodash.clone/-/lodash.clone-4.5.0.tgz#195870450f5a13192478df4bc3d23d2dea1907b6"
 
-lodash.clonedeep@4.5.0:
+lodash.clonedeep@^4.5.0:
   version "4.5.0"
   resolved "https://registry.yarnpkg.com/lodash.clonedeep/-/lodash.clonedeep-4.5.0.tgz#e23f3f9c4f8fbdde872529c1071857a086e5ccef"
 
@@ -3331,10 +3317,6 @@ moment-timezone@^0.5.0:
   resolved "https://registry.yarnpkg.com/moment-timezone/-/moment-timezone-0.5.13.tgz#99ce5c7d827262eb0f1f702044177f60745d7b90"
   dependencies:
     moment ">= 2.9.0"
-
-moment@2.19.3:
-  version "2.19.3"
-  resolved "https://registry.yarnpkg.com/moment/-/moment-2.19.3.tgz#bdb99d270d6d7fda78cc0fbace855e27fe7da69f"
 
 "moment@>= 2.9.0":
   version "2.19.1"
@@ -3947,12 +3929,6 @@ rechoir@^0.6.2:
   resolved "https://registry.yarnpkg.com/rechoir/-/rechoir-0.6.2.tgz#85204b54dba82d5742e28c96756ef43af50e3384"
   dependencies:
     resolve "^1.1.6"
-
-redeyed@~1.0.1:
-  version "1.0.1"
-  resolved "https://registry.yarnpkg.com/redeyed/-/redeyed-1.0.1.tgz#e96c193b40c0816b00aec842698e61185e55498a"
-  dependencies:
-    esprima "~3.0.0"
 
 regenerate@^1.2.1:
   version "1.3.3"
@@ -4629,7 +4605,7 @@ through2@^2, through2@^2.0.0, through2@^2.0.2:
     readable-stream "^2.1.5"
     xtend "~4.0.1"
 
-through@2, through@^2.3.4, through@^2.3.6, through@^2.3.8, through@~2.3, through@~2.3.1, through@~2.3.4:
+through@2, through@^2.3.4, through@^2.3.6, through@^2.3.8, through@~2.3, through@~2.3.1:
   version "2.3.8"
   resolved "https://registry.yarnpkg.com/through/-/through-2.3.8.tgz#0dd4c9ffaabc357960b1b724115d7e0e86a2e1f5"
 
@@ -4844,17 +4820,6 @@ v8flags@^2.0.2:
   dependencies:
     user-home "^1.1.1"
 
-validator@7.2.0:
-  version "7.2.0"
-  resolved "https://registry.yarnpkg.com/validator/-/validator-7.2.0.tgz#a63dcbaba51d4350bf8df20988e0d5a54d711791"
-
-varify@0.2.0:
-  version "0.2.0"
-  resolved "https://registry.yarnpkg.com/varify/-/varify-0.2.0.tgz#191da9fe9dc4cd68d0d14498d4e2a910ff4e6516"
-  dependencies:
-    redeyed "~1.0.1"
-    through "~2.3.4"
-
 vary@~1.1.2:
   version "1.1.2"
   resolved "https://registry.yarnpkg.com/vary/-/vary-1.1.2.tgz#2299f02c6ded30d4a5961b0b9f74524a18f634fc"
@@ -5035,11 +5000,9 @@ write@^0.2.1:
   version "4.0.1"
   resolved "https://registry.yarnpkg.com/xtend/-/xtend-4.0.1.tgz#a5c6d532be656e23db820efb943a1f04998d63af"
 
-yargs-parser@7.0.0:
-  version "7.0.0"
-  resolved "https://registry.yarnpkg.com/yargs-parser/-/yargs-parser-7.0.0.tgz#8d0ac42f16ea55debd332caf4c4038b3e3f5dfd9"
-  dependencies:
-    camelcase "^4.1.0"
+yargs-parser@^20.2.7:
+  version "20.2.9"
+  resolved "https://registry.yarnpkg.com/yargs-parser/-/yargs-parser-20.2.9.tgz#2eb7dc3b0289718fc295f362753845c41a0c94ee"
 
 yargs@~3.10.0:
   version "3.10.0"

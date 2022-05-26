@@ -55,7 +55,7 @@
   "dependencies": {
     "babel-plugin-root-import": "^5.1.0",
     "bluebird": "^3.5.1",
-    "convict": "^4.0.2",
+    "convict": "^6.2.3",
     "express": "^4.16.2",
     "inquirer": "^5.1.0",
     "lodash": "^4.17.4",
